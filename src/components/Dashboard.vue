@@ -10,10 +10,10 @@
                 <span class="card-title">{{sub.subNick}}</span>
               </div>
               <div class="col m3 s3 titlebtn">
-                <v-dialog v-model="dialog" width="500" class="right">
-                  <!-- <v-btn slot="activator" flat icon color="white">
+                <!-- <v-dialog v-model="dialog" width="500" class="right">
+                  <v-btn slot="activator" flat icon color="white">
                     <v-icon>delete</v-icon>
-                  </v-btn> -->
+                  </v-btn>
 
                   <v-card>
                     <v-card-title
@@ -36,7 +36,7 @@
                       <v-btn color="primary" flat @click="dialog = false">Cancel</v-btn>
                     </v-card-actions>
                   </v-card>
-                </v-dialog>
+                </v-dialog> -->
               </div>
             </div>
             <p style="tab-size: 4;">
@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       dialog: false,
-      name : "",
+      name: "",
       subjects: []
     };
   },
@@ -110,9 +110,9 @@ export default {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.name = user;
-        } else {
+      } else {
         this.name = null;
-        this.$router.push({name: 'Home'})
+        this.$router.push({ name: "Home" });
       }
     });
     let ref = db.collection("subjects");
@@ -122,12 +122,16 @@ export default {
           let subject = doc.data();
           subject.id = doc.id;
           let preCount = 0;
-          if (doc.data().presentDates.length > 0) {
-            preCount = doc.data().presentDates.length;
+          if (doc.data().presentDates) {
+            if (doc.data().presentDates.length > 0) {
+              preCount = doc.data().presentDates.length;
+            }
           }
           let abCount = 0;
-          if (doc.data().absentDates.length > 0) {
-            abCount = doc.data().absentDates.length;
+          if (doc.data().absentDates) {
+            if (doc.data().absentDates.length > 0) {
+              abCount = doc.data().absentDates.length;
+            }
           }
           let totalCount = preCount + abCount;
           let perAttend = (preCount / (preCount + abCount)) * 100;
